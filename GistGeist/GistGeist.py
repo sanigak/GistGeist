@@ -2,6 +2,9 @@
 import requests
 from bs4 import BeautifulSoup
 import re
+from collections import Counter
+import pymongo
+import datetime
 
 
 
@@ -20,13 +23,19 @@ def FoxFrontPageLinks():
 
         URLS = item.get('href')
         if URLS.count('-') > 3:
-            outputList.append(URLS)
 
+            if(URLS.startswith('/')):
+                URLS = URLS[2:]
 
+            if(URLS.startswith('w')):
+                URLS = "http://" + URLS
+            
+            if "foxbusiness" not in URLS:
+                outputList.append(URLS)
 
 
     finalList = set(outputList)
-    return finalList    
+    return finalList   
 
 
 def ArticleToText(URL):
@@ -52,8 +61,59 @@ def ArticleToText(URL):
             text_file.write(item)
         except:
             print(item)
+    pass
+
+def cleanupTXT():
+    f = open("output.txt","r+")
+    g = open("CLEANoutput.txt","w")
 
 
 
+    d = f.readlines()
+    g.write(d[0])
+    g.write(d[4])
 
-ArticleToText("https://www.foxnews.com/politics/rush-limbaugh-denies-that-wacko-right-talk-radio-influences-trumps-policy-decisions")
+def getTitle():
+
+    file_object = open("output.txt", "r")
+    return file_object.readline()
+
+def Engine():
+
+    
+    myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+
+    mydb = myclient["GistGeist"]
+
+    mycol = mydb["FoxArticles"]
+
+    links = FoxFrontPageLinks()
+
+    for link in links:
+
+        if link != None:
+
+            print(link)
+            ArticleToText(link)
+            cleanupTXT()
+
+        
+            title = getTitle()
+            contents = re.findall(r'\w+', open('output.txt').read().lower())
+            frequency = Counter(contents)
+            x = datetime.datetime.now()
+            date = x.strftime("%x")
+        
+
+            mydict = {
+                "title": title,
+                "contents": frequency,
+                "date": date
+                }
+            
+            mycol.insert_one(mydict)
+    pass
+
+
+
+Engine()
