@@ -1,4 +1,3 @@
-
 import requests
 from bs4 import BeautifulSoup
 import re
@@ -30,13 +29,12 @@ def FoxFrontPageLinks():
             if(URLS.startswith('w')):
                 URLS = "http://" + URLS
             
-            if "foxbusiness" not in URLS:
+            if ("insider." not in URLS):
                 outputList.append(URLS)
 
 
     finalList = set(outputList)
     return finalList   
-
 
 def ArticleToText(URL):
 
@@ -49,11 +47,13 @@ def ArticleToText(URL):
     list = soup.find_all('p')
     headline = soup.find_all('h1')
 
-
+    
 
     for item in headline:
         str = item.string
         text_file.write(str)
+
+    text_file.write("\n")
 
     for item in list:
         item = item.string
@@ -68,15 +68,29 @@ def cleanupTXT():
     g = open("CLEANoutput.txt","w")
 
 
-
-    d = f.readlines()
-    g.write(d[0])
-    g.write(d[4])
+    if (linesInFile("output.txt") == 5):
+        d = f.readlines()
+        g.write(d[0])
+        g.write(d[5])
+        print("yay")
+    else:
+        d = f.readlines()
+        g.write(d[0])
+        s = d[1]
+        s = s.strip("Advertisement")
+        s = s.strip("URL")
+        g.write(s)
 
 def getTitle():
 
     file_object = open("output.txt", "r")
     return file_object.readline()
+
+def linesInFile(file):
+    f = open("output.txt","r+")
+    for i, l in enumerate(f):
+        pass
+    return i + 1
 
 def Engine():
 
