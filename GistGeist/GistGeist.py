@@ -68,11 +68,10 @@ def cleanupTXT():
     g = open("CLEANoutput.txt","w")
 
 
-    if (linesInFile("output.txt") == 5):
+    if (linesInFile("output.txt") == 6):
         d = f.readlines()
         g.write(d[0])
         g.write(d[5])
-        print("yay")
     else:
         d = f.readlines()
         g.write(d[0])
