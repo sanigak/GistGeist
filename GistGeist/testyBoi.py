@@ -1,5 +1,5 @@
 #purely for testing stuff when I don't want to comment out too much of my code
 
-string = "GOOG"
+string = "=\"14\""
 
-print(string[0])
+print(string)
