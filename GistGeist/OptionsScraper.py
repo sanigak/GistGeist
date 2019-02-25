@@ -97,7 +97,6 @@ def ReadOptions(URL):
                 }
     
 
-
 def CleanData(string):
     stringy = str(string)
     stringy = stringy.strip('[]\'')
