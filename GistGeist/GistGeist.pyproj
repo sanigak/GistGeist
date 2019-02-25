@@ -21,7 +21,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="GistGeist.py" />
+    <Compile Include="ArticleScraper.py" />
     <Compile Include="OptionsScraper.py">
       <SubType>Code</SubType>
     </Compile>
