@@ -4,8 +4,51 @@ import re
 from collections import Counter
 import pymongo
 import datetime
+from html.parser import HTMLParser
 
 
+
+def CNNFrontPageLinks():
+     
+    homeurl = 'http://www.cnn.com/us'
+
+    page = requests.get(homeurl)
+    soup = BeautifulSoup(page.text, 'html.parser')
+    list = soup.find_all('a')
+
+    outputList = []
+      
+    for item in list:
+
+        URLS = item.get('href')
+
+        if "/politics/" in URLS or "/us/" in URLS:
+            if "specials" not in URLS and "video" not in URLS:
+                outputList.append(URLS)
+
+    homeurl = 'http://www.cnn.com/world'
+
+    page = requests.get(homeurl)
+    soup = BeautifulSoup(page.text, 'html.parser')
+    list = soup.find_all('a')
+
+    outputList = []
+      
+    for item in list:
+
+        URLS = item.get('href')
+
+        if "world" in URLS or "asia" in URLS or "middleeast" in URLS or "africa" in URLS or "americas" in URLS or "europe" in URLS:
+            if (URLS.count('-') > 3):
+                if "video" not in URLS:
+                    outputList.append(URLS)
+        
+
+
+
+
+    finalList = set(outputList)
+    return finalList 
 
 def FoxFrontPageLinks():
      
@@ -34,9 +77,31 @@ def FoxFrontPageLinks():
 
 
     finalList = set(outputList)
-    return finalList   
+    return finalList  
 
-def ArticleToText(URL):
+def CNNArticleToText(URL):
+
+    h = HTMLParser()
+
+    text_file = open("output.txt", "w")
+
+    homeurl = URL
+
+    page = requests.get(homeurl)
+    soup = BeautifulSoup(page.text, 'html.parser')
+    list = soup.find_all("div")
+
+    for item in list:
+        #print(item)
+        #print()
+        temp = str(item.contents)
+        if "zn-body" in temp:
+            temp = re.sub('<[^<]+?>', '', temp)
+            print(temp)
+            print()
+    pass
+
+def FoxArticleToText(URL):
 
     text_file = open("output.txt", "w")
 
@@ -107,7 +172,7 @@ def Engine():
         if link != None:
 
             print(link)
-            ArticleToText(link)
+            FoxArticleToText(link)
             cleanupTXT()
 
         
@@ -126,7 +191,5 @@ def Engine():
             
             mycol.insert_one(mydict)
     pass
-
-
 
 Engine()
