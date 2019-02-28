@@ -6,9 +6,7 @@ import pymongo
 import datetime
 
 
-
-
-
+#Given stock ticket, returns all URLS for option chain
 def GetOptions(ticket):
      
     homeurl = 'https://finance.yahoo.com/quote/' + ticket + '/options/'
@@ -30,7 +28,7 @@ def GetOptions(ticket):
 
     return(outputList) 
 
-
+#Given URL for specific option, returns relevant data as dict
 def ReadOptions(URL):
 
     homeurl = URL
@@ -96,7 +94,7 @@ def ReadOptions(URL):
                 "date": date
                 }
     
-
+#Helper method for ReadOptions(URL)
 def CleanData(string):
     stringy = str(string)
     stringy = stringy.strip('[]\'')

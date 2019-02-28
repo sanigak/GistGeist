@@ -7,7 +7,8 @@ import datetime
 from html.parser import HTMLParser
 
 
-
+#Returns all links on CNN/us and CNN/world
+#Had trouble pulling links from CNN homepage
 def CNNFrontPageLinks():
      
     homeurl = 'http://www.cnn.com/us'
@@ -50,6 +51,7 @@ def CNNFrontPageLinks():
     finalList = set(outputList)
     return finalList 
 
+#Returns links from front page of FoxNews
 def FoxFrontPageLinks():
      
     homeurl = 'http://www.foxnews.com'
@@ -79,6 +81,7 @@ def FoxFrontPageLinks():
     finalList = set(outputList)
     return finalList  
 
+#Parses a CNN article into a dict of words and their frequencies
 def CNNArticleToText(URL):
 
     h = HTMLParser()
@@ -101,6 +104,7 @@ def CNNArticleToText(URL):
             print()
     pass
 
+#Parses a CNN article into a dict of words and their frequencies
 def FoxArticleToText(URL):
 
     text_file = open("output.txt", "w")
@@ -128,6 +132,7 @@ def FoxArticleToText(URL):
             print(item)
     pass
 
+#Helper method to fix certain problems with the raw output.txt file generated
 def cleanupTXT():
     f = open("output.txt","r+")
     g = open("CLEANoutput.txt","w")
@@ -144,18 +149,21 @@ def cleanupTXT():
         s = s.strip("Advertisement")
         s = s.strip("URL")
         g.write(s)
-
-def getTitle():
-
-    file_object = open("output.txt", "r")
-    return file_object.readline()
-
+        
+#Helper method for cleanupTXT method
 def linesInFile(file):
     f = open("output.txt","r+")
     for i, l in enumerate(f):
         pass
     return i + 1
 
+#Pulls a title from any news article
+def getTitle():
+
+    file_object = open("output.txt", "r")
+    return file_object.readline()
+
+#Executes article scraping
 def Engine():
 
     
