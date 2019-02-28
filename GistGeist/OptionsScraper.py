@@ -33,12 +33,19 @@ def ReadOptions(URL):
 
     homeurl = URL
 
-    page = requests.get(homeurl)
+    page = requests.get(homeurl, verify=False)
     soup = BeautifulSoup(page.text, 'html.parser')
     list = soup.find_all('span')
 
     iterator = 0
 
+    #This horrible mess extracts the stock symbol from the URL
+    temp = URL.replace("https://finance.yahoo.com/quote/","")
+    digits = filter(str.isdigit, temp)
+    for item in digits:
+        temp = temp.replace(item, "")
+    type = temp[-1]
+    symbol = temp[:-1]
     
     
     for item in list:
@@ -49,7 +56,7 @@ def ReadOptions(URL):
         elif iterator == 9:
             change = item.contents
         elif iterator == 13:
-            prevClose = item
+            prevClose = item.contents
         elif iterator == 15:
             open = item.contents
         elif iterator == 17:
@@ -60,7 +67,7 @@ def ReadOptions(URL):
             strike = item.contents
         elif iterator == 28:
             volume = item.contents
-        elif iterator == 20:
+        elif iterator == 30:
             openInterest = item.contents
 
         iterator += 1
@@ -81,18 +88,25 @@ def ReadOptions(URL):
     strvolume = CleanData(volume)
     stropenInt = CleanData(openInterest)
 
+    x = datetime.datetime.now()
+    date = x.strftime("%x")
+
     mydict = {
+                "symbol": symbol,
+                "type": type,
                 "price": strprice,
                 "changeABS": changelist[0],
                 "changePER": changelist[1],
                 "prevClose": strprevClose,
                 "open": stropen,
-                "bid": strbig,
+                "bid": strbid,
                 "ask": strask,
-                "contents": frequency,
-                "contents": frequency,
+                "strike": strstrike,
+                "volume": strvolume,
+                "openInt": stropenInt,
                 "date": date
                 }
+    return mydict
     
 #Helper method for ReadOptions(URL)
 def CleanData(string):
@@ -100,7 +114,26 @@ def CleanData(string):
     stringy = stringy.strip('[]\'')
     return stringy
 
+#Brings Everything Together
+def Engine():
+
+    myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+
+    mydb = myclient["GistGeist"]
+
+    mycol = mydb["Options"]
+
+    file = open("symbols.txt","r")
+    symbols = file.readlines()
 
 
+    for item in symbols:
+        symbol = item.rstrip("\n")
+        URLlist = GetOptions(symbol)
 
-ReadOptions("https://finance.yahoo.com/quote/FB190301C00100000")
+        for URL in URLlist:
+            dictyBOI = ReadOptions(URL)
+            mycol.insert_one(dictyBOI)
+
+Engine()
+
