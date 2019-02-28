@@ -33,7 +33,7 @@ def ReadOptions(URL):
 
     homeurl = URL
 
-    page = requests.get(homeurl, verify=False)
+    page = requests.get(homeurl)
     soup = BeautifulSoup(page.text, 'html.parser')
     list = soup.find_all('span')
 

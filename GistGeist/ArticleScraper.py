@@ -81,6 +81,36 @@ def FoxFrontPageLinks():
     finalList = set(outputList)
     return finalList  
 
+#Returns links from front page of BBC
+def BBCFrontPageLinks():
+     
+    homeurl = 'http://www.bbc.com'
+
+    page = requests.get(homeurl)
+    soup = BeautifulSoup(page.text, 'html.parser')
+    list = soup.find_all('a')
+
+    outputList = []
+    
+
+    for item in list:
+
+        URLS = item.get('href')
+        if (URLS.count('-')> 1):
+            if (hasNumbers(URLS)):
+                if "pictures" not in URLS and "video" not in URLS:
+                    if (URLS[0] == '/'):
+                        URLS = "https://www.bbc.com" + URLS
+                    outputList.append(URLS)
+
+    finalList = set(outputList)
+    return finalList
+
+#Helper method for BBCFrontPageLinks
+def hasNumbers(inputString):
+
+    return any(char.isdigit() for char in inputString)
+
 #Parses a CNN article into a dict of words and their frequencies
 def CNNArticleToText(URL):
 
@@ -90,7 +120,7 @@ def CNNArticleToText(URL):
 
     homeurl = URL
 
-    page = requests.get(homeurl)
+    page = requests.get(homeurl, verify = False)
     soup = BeautifulSoup(page.text, 'html.parser')
     list = soup.find_all("div")
 
@@ -100,11 +130,13 @@ def CNNArticleToText(URL):
         temp = str(item.contents)
         if "zn-body" in temp:
             temp = re.sub('<[^<]+?>', '', temp)
-            print(temp)
+            if "(CNN)" in temp:
+                print(temp)
+
             print()
     pass
 
-#Parses a CNN article into a dict of words and their frequencies
+#Parses a Fox article into a dict of words and their frequencies
 def FoxArticleToText(URL):
 
     text_file = open("output.txt", "w")
@@ -132,6 +164,40 @@ def FoxArticleToText(URL):
             print(item)
     pass
 
+#Parses a BBC article into a dict of words and their frequencies
+def BBCArticleToText(URL):
+
+    text_file = open("output.txt", "w")
+
+    homeurl = URL
+
+    page = requests.get(homeurl, verify = False)
+    soup = BeautifulSoup(page.text, 'html.parser')
+    list = soup.find_all('p')
+
+    headline = soup.find_all('h1')
+
+    
+
+    for item in headline:
+        stringy = item.string
+        text_file.write(stringy)
+
+    text_file.write("\n")
+
+    for item in list:
+        stringy = str(item.contents)
+        if "img alt" not in stringy:
+            if len(stringy) > 20:
+                stringy = CleanData(stringy)
+                try:
+                    text_file.write(stringy)
+                except:
+                    print(item)
+    
+                
+    pass
+
 #Helper method to fix certain problems with the raw output.txt file generated
 def cleanupTXT():
     f = open("output.txt","r+")
@@ -149,6 +215,7 @@ def cleanupTXT():
         s = s.strip("Advertisement")
         s = s.strip("URL")
         g.write(s)
+    pass
         
 #Helper method for cleanupTXT method
 def linesInFile(file):
@@ -156,6 +223,12 @@ def linesInFile(file):
     for i, l in enumerate(f):
         pass
     return i + 1
+
+#Helper for BBCArticleToText(URL)
+def CleanData(string):
+    stringy = str(string)
+    stringy = stringy.strip('[]\'')
+    return stringy
 
 #Pulls a title from any news article
 def getTitle():
@@ -168,14 +241,12 @@ def Engine():
 
     
     myclient = pymongo.MongoClient("mongodb://localhost:27017/")
-
     mydb = myclient["GistGeist"]
-
     mycol = mydb["FoxArticles"]
 
-    links = FoxFrontPageLinks()
+    Foxlinks = FoxFrontPageLinks()
 
-    for link in links:
+    for link in Foxlinks:
 
         if link != None:
 
@@ -200,4 +271,8 @@ def Engine():
             mycol.insert_one(mydict)
     pass
 
-Engine()
+#Engine()
+
+url = "https://www.bbc.com/news/world-asia-47398974"
+
+BBCArticleToText(url)

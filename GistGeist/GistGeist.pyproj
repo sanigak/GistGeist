@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>4afd1050-2256-4220-aecc-3ed65be361b4</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>OptionsScraper.py</StartupFile>
+    <StartupFile>ArticleScraper.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
