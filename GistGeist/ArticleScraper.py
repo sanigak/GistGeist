@@ -259,8 +259,7 @@ def CNNEngine():
         if link != None:
 
             print(link)
-            FoxArticleToText(link)
-            cleanupTXT()
+            CNNArticleToText(link)
 
         
             title = getTitle()
@@ -354,6 +353,7 @@ def Engine():
     
     FoxEngine()
     BBCEngine()
+    CNNEngine()
 
     pass
 
