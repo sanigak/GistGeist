@@ -350,10 +350,29 @@ def BBCEngine():
 #Executes article scraping
 def Engine():
 
+    x = datetime.datetime.now()
+    date = x.strftime("%x")
+
+    date = str(date)
+    date = date.replace("/", "-")
+
+    stringy = "C:\\Users\\sanig\\Documents\\GistGeist logs\\" + "GISTGEIST_LOG_" + date + ".txt"
     
-    FoxEngine()
-    BBCEngine()
-    CNNEngine()
+    try:
+        CNNEngine()
+    except:
+        f.write("CNN failed")
+
+    try:
+        FoxEngine()
+    except:
+        f.write("Fox failed")
+
+    try:
+        BBCEngine()
+    except:
+        f.write("BBC failed")
+    
 
     pass
 
