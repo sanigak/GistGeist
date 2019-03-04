@@ -2,14 +2,8 @@ import pymongo
 import datetime
 
 
-#Currently only works for Fox articles as CNN scraping is not online yet
-myclient = pymongo.MongoClient("mongodb://localhost:27017/")
-mydb = myclient["GistGeist"]
-col = mydb["FoxArticles"]
-
-
-#Given a date, returns all articles (raw) stored on that date
-def returnDate(date):
+#Given a date, AND pymongo COLLECTION, returns all articles (raw) stored on that date
+def returnDate(date, col):
     query = col.find({"date":date})
     return query
 
@@ -30,7 +24,7 @@ def returnContents(query):
     return contentsList
 
 #Given a word, returns articles (raw) where that word appears at least once
-def returnArticlesWithWord(word):
+def returnArticlesWithWord(word, col):
     query = col.find({"contents." + word:{"$gt":0}})
     return query
 
