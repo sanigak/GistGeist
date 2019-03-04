@@ -86,7 +86,7 @@ def BBCFrontPageLinks():
      
     homeurl = 'http://www.bbc.com'
 
-    page = requests.get(homeurl)
+    page = requests.get(homeurl, verify=False)
     soup = BeautifulSoup(page.text, 'html.parser')
     list = soup.find_all('a')
 
@@ -236,10 +236,8 @@ def getTitle():
     file_object = open("output.txt", "r")
     return file_object.readline()
 
-#Executes article scraping
-def Engine():
-
-    
+#Sub-engine for the Fox-related tasks
+def FoxEngine():
     myclient = pymongo.MongoClient("mongodb://localhost:27017/")
     mydb = myclient["GistGeist"]
     mycol = mydb["FoxArticles"]
@@ -269,10 +267,51 @@ def Engine():
                 }
             
             mycol.insert_one(mydict)
+
     pass
 
-#Engine()
+#Sub-engine for the BBC-related tasks
+def BBCEngine():
+    myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+    mydb = myclient["GistGeist"]
+    mycol = mydb["BBCArticles"]
 
-url = "https://www.bbc.com/news/world-asia-47398974"
+    BBClinks = BBCFrontPageLinks()
 
-BBCArticleToText(url)
+    for link in BBClinks:
+
+        if link != None:
+
+            print(link)
+            BBCArticleToText(link)
+            cleanupTXT()
+
+        
+            title = getTitle()
+            contents = re.findall(r'\w+', open('output.txt').read().lower())
+            frequency = Counter(contents)
+            x = datetime.datetime.now()
+            date = x.strftime("%x")
+        
+
+            mydict = {
+                "title": title,
+                "contents": frequency,
+                "date": date
+                }
+            
+            mycol.insert_one(mydict)
+
+    pass
+
+
+#Executes article scraping
+def Engine():
+
+    FoxEngine()
+    BBCEngine()
+
+    pass
+
+Engine()
+
