@@ -13,7 +13,7 @@ def CNNFrontPageLinks():
      
     homeurl = 'http://www.cnn.com/us'
 
-    page = requests.get(homeurl, verify = False)
+    page = requests.get(homeurl)
     soup = BeautifulSoup(page.text, 'html.parser')
     list = soup.find_all('a')
 
@@ -30,7 +30,7 @@ def CNNFrontPageLinks():
 
     homeurl = 'http://www.cnn.com/world'
 
-    page = requests.get(homeurl, verify = False)
+    page = requests.get(homeurl)
     soup = BeautifulSoup(page.text, 'html.parser')
     list = soup.find_all('a')
       
@@ -86,7 +86,7 @@ def BBCFrontPageLinks():
      
     homeurl = 'http://www.bbc.com'
 
-    page = requests.get(homeurl, verify=False)
+    page = requests.get(homeurl)
     soup = BeautifulSoup(page.text, 'html.parser')
     list = soup.find_all('a')
 
@@ -120,7 +120,7 @@ def CNNArticleToText(URL):
 
     homeurl = URL
 
-    page = requests.get(homeurl, verify = False)
+    page = requests.get(homeurl)
     soup = BeautifulSoup(page.text, 'html.parser')
     list = soup.find_all("div")
     headline = soup.find_all('h1')
@@ -181,7 +181,7 @@ def BBCArticleToText(URL):
 
     homeurl = URL
 
-    page = requests.get(homeurl, verify = False)
+    page = requests.get(homeurl)
     soup = BeautifulSoup(page.text, 'html.parser')
     list = soup.find_all('p')
 
