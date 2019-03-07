@@ -246,7 +246,8 @@ def getTitle():
     file_object = open("output.txt", "r")
     return file_object.readline()
 
-#Sub-engine for the CNN-related tasks -- BROKEN
+#Sub-engine for the CNN-related tasks
+#Returns "CNN Worked"
 def CNNEngine():
     myclient = pymongo.MongoClient("mongodb://localhost:27017/")
     mydb = myclient["GistGeist"]
@@ -277,9 +278,10 @@ def CNNEngine():
             
             mycol.insert_one(mydict)
 
-    pass
+    return("CNN worked\n")
 
 #Sub-engine for the Fox-related tasks
+#Returns "Fox Worked"
 def FoxEngine():
     myclient = pymongo.MongoClient("mongodb://localhost:27017/")
     mydb = myclient["GistGeist"]
@@ -311,15 +313,19 @@ def FoxEngine():
             
             mycol.insert_one(mydict)
 
-    pass
+    return("Fox worked\n")
 
 #Sub-engine for the BBC-related tasks
+#Returns "BBC Worked"
 def BBCEngine():
     myclient = pymongo.MongoClient("mongodb://localhost:27017/")
     mydb = myclient["GistGeist"]
     mycol = mydb["BBCArticles"]
 
     BBClinks = BBCFrontPageLinks()
+
+    for item in BBClinks:
+        print(item)
 
     for link in BBClinks:
 
@@ -345,7 +351,8 @@ def BBCEngine():
             
             mycol.insert_one(mydict)
 
-    pass
+    return("BBC worked\n")
+
 
 #Executes article scraping
 def Engine():
@@ -357,21 +364,25 @@ def Engine():
     date = date.replace("/", "-")
 
     stringy = "C:\\Users\\sanig\\Documents\\GistGeist logs\\" + "GISTGEIST_LOG_" + date + ".txt"
+
+    f = open(stringy, "w+")
+
+
     
     try:
-        CNNEngine()
+        f.write(CNNEngine())
     except:
-        f.write("CNN failed")
+        f.write("CNN failed\n")
 
     try:
-        FoxEngine()
+        f.write(FoxEngine())
     except:
-        f.write("Fox failed")
+        f.write("Fox failed\n")
 
     try:
-        BBCEngine()
+        f.write(BBCEngine())
     except:
-        f.write("BBC failed")
+        f.write("BBC failed\n")
     
 
     pass
