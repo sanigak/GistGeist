@@ -106,6 +106,29 @@ def BBCFrontPageLinks():
     finalList = set(outputList)
     return finalList
 
+#Returns links from front page of Al Jazeera
+def AJFrontPageLinks():
+     
+    homeurl = 'https://www.aljazeera.com/'
+
+    page = requests.get(homeurl, verify = False)
+    soup = BeautifulSoup(page.text, 'html.parser')
+    list = soup.find_all('a')
+
+    outputList = []
+    
+
+    for item in list:
+
+        URLS = item.get('href')
+        stringy = str(URLS)
+        if (stringy.count('-')> 3) and "news" in stringy:
+           outputList.append(stringy)
+           print(stringy)
+
+    finalList = set(outputList)
+    return finalList
+
 #Helper method for BBCFrontPageLinks
 def hasNumbers(inputString):
 
@@ -208,6 +231,39 @@ def BBCArticleToText(URL):
                 
     pass
 
+#Parses an Al Jazeera article into a dict of words and their frequencies
+#A little sloppy, as it also pulls a bunch of uneccesssary links and some junk, but also gets all the important info and that is all that is needed for now
+def AJArticleToText(URL):
+
+    text_file = open("output.txt", "w")
+
+    homeurl = URL
+
+    page = requests.get(homeurl, verify = False)
+    soup = BeautifulSoup(page.text, 'html.parser')
+    list = soup.find_all('p')
+
+    headline = soup.find_all('h1')
+
+    
+
+    for item in headline:
+        stringy = item.string
+        text_file.write(stringy)
+
+    text_file.write("\n")
+
+    for item in list:
+        stringy = str(item.contents)
+        try:
+            cleaned = CleanData(stringy)
+            text_file.write(CleanData(stringy))
+        except:
+            print(item)
+    
+                
+    pass
+
 #Helper method to fix certain problems with the raw output.txt file generated
 def cleanupTXT():
     f = open("output.txt","r+")
@@ -234,7 +290,7 @@ def linesInFile(file):
         pass
     return i + 1
 
-#Helper for BBCArticleToText(URL)
+#Helper for BBCArticleToText(URL), AJArticleToText(URL)
 def CleanData(string):
     stringy = str(string)
     stringy = stringy.strip('[]\'')
@@ -324,8 +380,7 @@ def BBCEngine():
 
     BBClinks = BBCFrontPageLinks()
 
-    for item in BBClinks:
-        print(item)
+
 
     for link in BBClinks:
 
@@ -353,6 +408,39 @@ def BBCEngine():
 
     return("BBC worked\n")
 
+#Sub-engine for the Al Jazeera-related tasks
+#Returns "AJ Worked"
+def AJEngine():
+    myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+    mydb = myclient["GistGeist"]
+    mycol = mydb["AJArticles"]
+
+    AJlinks = AJFrontPageLinks()
+
+
+    for link in AJlinks:
+
+        if link != None:
+
+            
+            AJArticleToText(link)
+        
+            title = getTitle()
+            contents = re.findall(r'\w+', open('output.txt').read().lower())
+            frequency = Counter(contents)
+            x = datetime.datetime.now()
+            date = x.strftime("%x")
+        
+
+            mydict = {
+                "title": title,
+                "contents": frequency,
+                "date": date
+                }
+            
+            mycol.insert_one(mydict)
+
+    return("AJ worked\n")
 
 #Executes article scraping
 def Engine():
@@ -383,6 +471,12 @@ def Engine():
         f.write(BBCEngine())
     except:
         f.write("BBC failed\n")
+
+    try:
+        f.write(AJEngine())
+    except:
+        f.write("AJ failed\n")
+    
     
 
     pass
