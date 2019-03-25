@@ -451,7 +451,7 @@ def Engine():
     date = str(date)
     date = date.replace("/", "-")
 
-    stringy = "C:\\Users\\sanig\\Documents\\GistGeist logs\\" + "GISTGEIST_LOG_" + date + ".txt"
+    stringy = "C:\\Users\\sanig\\Documents\\GistGeist logs\\" + "GISTGEIST_ARTICLES_LOG_" + date + ".txt"
 
     f = open(stringy, "w+")
 

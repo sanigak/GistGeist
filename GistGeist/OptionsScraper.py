@@ -11,7 +11,7 @@ def GetOptions(ticket):
      
     homeurl = 'https://finance.yahoo.com/quote/' + ticket + '/options/'
 
-    page = requests.get(homeurl)
+    page = requests.get(homeurl, verify = False)
     soup = BeautifulSoup(page.text, 'html.parser')
     list = soup.find_all('a')
     
@@ -23,6 +23,7 @@ def GetOptions(ticket):
         if "/" + ticket + "/" not in URLS:
             if "/quote/" in  URLS:
                 if len(URLS) > 15:
+                    URLS = "https://finance.yahoo.com" + URLS
                     outputList.append(URLS)
 
 
@@ -33,7 +34,7 @@ def ReadOptions(URL):
 
     homeurl = URL
 
-    page = requests.get(homeurl)
+    page = requests.get(homeurl, verify = False)
     soup = BeautifulSoup(page.text, 'html.parser')
     list = soup.find_all('span')
 
@@ -74,10 +75,12 @@ def ReadOptions(URL):
 
 
     
-
+    print(change)
     strchange = str(change)
     strchange = strchange.strip('[]\'')
     changelist = strchange.split(' ')
+
+    print(strchange)
 
     strprice = CleanData(price)
     strprevClose = CleanData(prevClose)
@@ -123,6 +126,10 @@ def Engine():
 
     mycol = mydb["Options"]
 
+    stringy = "C:\\Users\\sanig\\Documents\\GistGeist logs\\" + "GISTGEIST_OPTIONS_LOG_" + date + ".txt"
+
+    f = open(stringy, "w+")
+
     file = open("symbols.txt","r")
     symbols = file.readlines()
 
@@ -132,8 +139,11 @@ def Engine():
         URLlist = GetOptions(symbol)
 
         for URL in URLlist:
-            dictyBOI = ReadOptions(URL)
+            try:
+                dictyBOI = ReadOptions(URL)
+            except:
+                f.write(symbol + ("HAS FAILED!"))
+
             mycol.insert_one(dictyBOI)
 
 Engine()
-
