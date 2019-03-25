@@ -124,13 +124,18 @@ def Engine():
 
     mycol = mydb["Options"]
 
-    stringy = "C:\\Users\\sanig\\Documents\\GistGeist logs\\" + "GISTGEIST_OPTIONS_LOG_" + date + ".txt"
+    
 
+    #This block is stuff for the log
+    
     f = open(stringy, "w+")
-
+    x = datetime.datetime.now()
+    date = x.strftime("%x")
+    date = str(date)
+    date = date.replace("/", "-")
     file = open("symbols.txt","r")
     symbols = file.readlines()
-
+    stringy = "C:\\Users\\sanig\\Documents\\GistGeist logs\\" + "GISTGEIST_OPTIONS_LOG_" + date + ".txt"
 
     for item in symbols:
         symbol = item.rstrip("\n")
