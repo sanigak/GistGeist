@@ -75,12 +75,10 @@ def ReadOptions(URL):
 
 
     
-    print(change)
     strchange = str(change)
     strchange = strchange.strip('[]\'')
     changelist = strchange.split(' ')
 
-    print(strchange)
 
     strprice = CleanData(price)
     strprevClose = CleanData(prevClose)
