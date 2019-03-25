@@ -11,7 +11,7 @@ def GetOptions(ticket):
      
     homeurl = 'https://finance.yahoo.com/quote/' + ticket + '/options/'
 
-    page = requests.get(homeurl, verify = False)
+    page = requests.get(homeurl)
     soup = BeautifulSoup(page.text, 'html.parser')
     list = soup.find_all('a')
     
@@ -34,7 +34,7 @@ def ReadOptions(URL):
 
     homeurl = URL
 
-    page = requests.get(homeurl, verify = False)
+    page = requests.get(homeurl)
     soup = BeautifulSoup(page.text, 'html.parser')
     list = soup.find_all('span')
 
@@ -47,6 +47,7 @@ def ReadOptions(URL):
         temp = temp.replace(item, "")
     type = temp[-1]
     symbol = temp[:-1]
+    symbol = str(symbol)
     
     
     for item in list:
@@ -127,15 +128,18 @@ def Engine():
     
 
     #This block is stuff for the log
-    
     f = open(stringy, "w+")
     x = datetime.datetime.now()
     date = x.strftime("%x")
     date = str(date)
     date = date.replace("/", "-")
+    stringy = "C:\\Users\\sanig\\Documents\\GistGeist logs\\" + "GISTGEIST_OPTIONS_LOG_" + date + ".txt"
+
+
+    #Opens file to import symbols
     file = open("symbols.txt","r")
     symbols = file.readlines()
-    stringy = "C:\\Users\\sanig\\Documents\\GistGeist logs\\" + "GISTGEIST_OPTIONS_LOG_" + date + ".txt"
+
 
     for item in symbols:
         symbol = item.rstrip("\n")
@@ -145,6 +149,7 @@ def Engine():
             try:
                 dictyBOI = ReadOptions(URL)
             except:
+                pass
                 f.write(symbol + ("HAS FAILED!"))
 
             mycol.insert_one(dictyBOI)

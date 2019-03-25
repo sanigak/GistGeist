@@ -1,11 +1,32 @@
 import pymongo
 import datetime
 
+#This file contains various methods for querying the various article databases.
+#It it split into 3 sections, level 1, 2, and 3 queries.
+
+
+
+
+#Set of methods which take in a collection to query, as well as info to sort by
+#These are the only methods that hit the database directly
+#I refer to these as level 1 queries
 
 #Given a date, AND pymongo COLLECTION, returns all articles (raw) stored on that date
 def returnDate(date, col):
     query = col.find({"date":date})
     return query
+
+#Given a word and COllECTION, returns articles (raw) where that word appears at least once
+def returnArticlesWithWord(word, col):
+    query = col.find({"contents." + word:{"$gt":0}})
+    return query
+
+
+
+
+
+#Set of methods which take in the results of a level 1 query to extract specific info
+#I refer to this as a level 2 query
 
 #Given set of raw articles, returns all their titles
 def returnTitles(query):
@@ -23,10 +44,14 @@ def returnContents(query):
         contentsList.append(content)
     return contentsList
 
-#Given a word, returns articles (raw) where that word appears at least once
-def returnArticlesWithWord(word, col):
-    query = col.find({"contents." + word:{"$gt":0}})
-    return query
+
+
+
+
+
+#Set of methods to analyze the results of level 2 queries
+#I refer to these as level 3 queries
+
 
 #Given word and title list, returns number of titles in which that word appears
 #Works well with returnTitles(query)
