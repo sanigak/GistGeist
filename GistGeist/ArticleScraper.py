@@ -123,6 +123,7 @@ def AJFrontPageLinks():
         URLS = item.get('href')
         stringy = str(URLS)
         if (stringy.count('-')> 3) and "news" in stringy:
+           stringy = "https://www.aljazeera.com" + stringy
            outputList.append(stringy)
            print(stringy)
 
@@ -239,7 +240,7 @@ def AJArticleToText(URL):
 
     homeurl = URL
 
-    page = requests.get(homeurl, verify = False)
+    page = requests.get(homeurl)
     soup = BeautifulSoup(page.text, 'html.parser')
     list = soup.find_all('p')
 
@@ -416,7 +417,10 @@ def AJEngine():
     mycol = mydb["AJArticles"]
 
     AJlinks = AJFrontPageLinks()
-
+    print("HERE")
+    print("HERE")
+    print("HERE")
+    print("HERE")
 
     for link in AJlinks:
 
