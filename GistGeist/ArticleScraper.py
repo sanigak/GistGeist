@@ -316,11 +316,15 @@ def CNNEngine():
 
         if link != None:
 
-            print(link)
-            CNNArticleToText(link)
+           
+            try:
+                CNNArticleToText(link)
+                title = getTitle()
+            except:
+                print("bleh")
 
         
-            title = getTitle()
+            
             contents = re.findall(r'\w+', open('output.txt').read().lower())
             frequency = Counter(contents)
             x = datetime.datetime.now()
@@ -426,10 +430,13 @@ def AJEngine():
 
         if link != None:
 
-            
-            AJArticleToText(link)
+            try:
+                AJArticleToText(link)
+                title = getTitle
+            except:
+                print("bleh")
         
-            title = getTitle()
+            ()
             contents = re.findall(r'\w+', open('output.txt').read().lower())
             frequency = Counter(contents)
             x = datetime.datetime.now()
