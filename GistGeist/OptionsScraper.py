@@ -128,12 +128,13 @@ def Engine():
     
 
     #This block is stuff for the log
-    f = open(stringy, "w+")
+    
     x = datetime.datetime.now()
     date = x.strftime("%x")
     date = str(date)
     date = date.replace("/", "-")
     stringy = "C:\\Users\\sanig\\Documents\\GistGeist logs\\" + "GISTGEIST_OPTIONS_LOG_" + date + ".txt"
+    f = open(stringy, "w+")
 
 
     #Opens file to import symbols
@@ -144,14 +145,14 @@ def Engine():
     for item in symbols:
         symbol = item.rstrip("\n")
         URLlist = GetOptions(symbol)
-
+        print(symbol)
         for URL in URLlist:
             try:
                 dictyBOI = ReadOptions(URL)
+                mycol.insert_one(dictyBOI)
             except:
-                pass
-                f.write(symbol + ("HAS FAILED!"))
+                f.write(symbol + (" HAS FAILED!\n"))
 
-            mycol.insert_one(dictyBOI)
+            
 
 Engine()
