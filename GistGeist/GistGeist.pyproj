@@ -39,9 +39,16 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="DB Examples\AJbackup.json" />
+    <Content Include="DB Examples\BBCbackup.json" />
+    <Content Include="DB Examples\CNNbackup.json" />
+    <Content Include="DB Examples\Foxbackup.json" />
     <Content Include="output.txt" />
     <Content Include="CLEANoutput.txt" />
     <Content Include="symbols.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DB Examples\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
