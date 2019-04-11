@@ -4,7 +4,9 @@ import datetime
 #This file contains various methods for querying the various article databases.
 #It it split into 3 sections, level 1, 2, and 3 queries.
 
-
+myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+mydb = myclient["GistGeist"]
+FOXcol = mydb["FoxArticles"]
 
 
 #Set of methods which take in a collection to query, as well as info to sort by
