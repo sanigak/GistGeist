@@ -43,6 +43,7 @@
     <Content Include="DB Examples\BBCbackup.json" />
     <Content Include="DB Examples\CNNbackup.json" />
     <Content Include="DB Examples\Foxbackup.json" />
+    <Content Include="DB Examples\Optionsbackup.json" />
     <Content Include="output.txt" />
     <Content Include="CLEANoutput.txt" />
     <Content Include="symbols.txt" />
