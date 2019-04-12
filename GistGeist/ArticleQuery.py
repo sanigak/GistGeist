@@ -30,8 +30,12 @@ def returnArticlesWithWord(word, col):
     query = col.find({"contents." + word:{"$gt":0}})
     return query
 
-
-
+#Number of articles scraped for a given collection on a given date
+def numArticles(date, col):
+    query = col.count_documents({"date":date})
+    query = int(query)
+    return query
+    
 
 
 #Set of methods which take in the results of a level 1 query to extract specific info
@@ -98,18 +102,41 @@ def wordFreqContents(contentsList, word):
 
 
 
-dates = dateRange("02/20/19","04/11/19")
 
-queryList = []
 
-plotList = []
 
-for date in dates:
-    query = returnDate(date,FOXcol) 
-    content = returnContents(query)
-    freq = wordFreqContents(content,"bad")
-    plotList.append(freq)
 
-plt.plot(plotList)
-plt.grid(which='both')
-plt.show()
+
+
+
+
+ 
+def plotGeneration(word, col, startDate, endDate):
+
+    dates = dateRange(startDate, endDate)
+
+
+    simpDates = []
+    plotList = []
+
+    for date in dates:
+
+        simpDates.append(date[:-3])
+        query = returnDate(date,col) 
+
+        num = numArticles(date,col)
+        content = returnContents(query)
+        freq = wordFreqContents(content,word)
+        if num > 0:
+            freq = freq/num
+        
+        
+        
+        plotList.append(freq)
+
+
+    plt.plot(simpDates, plotList)
+    plt.show()
+
+
+plotGeneration("pittsburgh", FOXcol, "03/08/19", "04/11/19")
