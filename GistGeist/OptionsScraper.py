@@ -24,7 +24,8 @@ def GetOptions(ticket):
             if "/quote/" in  URLS:
                 if len(URLS) > 15:
                     URLS = "https://finance.yahoo.com" + URLS
-                    outputList.append(URLS)
+                    index = URLS.find("?p=")
+                    outputList.append(URLS[:index])
 
 
     return(outputList) 
@@ -52,24 +53,24 @@ def ReadOptions(URL):
     
     for item in list:
            
-
-        if iterator == 8:
+        print(item)
+        if iterator == 6:
             price = item.contents
-        elif iterator == 9:
+        elif iterator == 7:
             change = item.contents
-        elif iterator == 13:
+        elif iterator == 11:
             prevClose = item.contents
-        elif iterator == 15:
+        elif iterator == 13:
             open = item.contents
-        elif iterator == 17:
+        elif iterator == 15:
             bid = item.contents
-        elif iterator == 19:
+        elif iterator == 17:
             ask = item.contents
-        elif iterator == 21:
+        elif iterator == 19:
             strike = item.contents
-        elif iterator == 28:
+        elif iterator == 26:
             volume = item.contents
-        elif iterator == 30:
+        elif iterator == 28:
             openInterest = item.contents
 
         iterator += 1
@@ -148,12 +149,16 @@ def Engine():
         print(symbol)
         for URL in URLlist:
             try:
+                print(URL)
                 dictyBOI = ReadOptions(URL)
                 mycol.insert_one(dictyBOI)
             except:
                 f.write(symbol + (" HAS FAILED!\n"))
-
+                pass
 
             
+
+    pass
+
 
 Engine()

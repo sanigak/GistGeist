@@ -1,5 +1,9 @@
 import pymongo
 import datetime
+import matplotlib.pyplot as plt
+from HelperQuery import dateRange
+from HelperQuery import additionalDays
+from HelperQuery import previousDays
 
 #This file contains various methods for querying the various article databases.
 #It it split into 3 sections, level 1, 2, and 3 queries.
@@ -7,6 +11,9 @@ import datetime
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient["GistGeist"]
 FOXcol = mydb["FoxArticles"]
+CNNcol = mydb["CNNArticles"]
+BBCcol = mydb["BBCArticles"]
+AJcol = mydb["AJArticles"]
 
 
 #Set of methods which take in a collection to query, as well as info to sort by
@@ -90,3 +97,19 @@ def wordFreqContents(contentsList, word):
     return counter
 
 
+
+dates = dateRange("02/20/19","04/11/19")
+
+queryList = []
+
+plotList = []
+
+for date in dates:
+    query = returnDate(date,FOXcol) 
+    content = returnContents(query)
+    freq = wordFreqContents(content,"bad")
+    plotList.append(freq)
+
+plt.plot(plotList)
+plt.grid(which='both')
+plt.show()

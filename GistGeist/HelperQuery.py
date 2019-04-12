@@ -19,10 +19,26 @@ def datetime_to_str(dateObj):
 
 def dateRange(start, end):
     outputList = []
-    for n in range(int ((end - start).days)+1):
-        outputList.append(start + datetime.timedelta(n))
+    startDate = str_to_datetime(start)
+    endDate = str_to_datetime(end)
+    for n in range(int ((endDate - startDate).days)+1):
+        ans = startDate + datetime.timedelta(n)
+        ans = datetime_to_str(ans)
+        outputList.append(ans)
     return outputList
 
 def additionalDays(start, days):
-    date_list = [start + datetime.timedelta(days=x) for x in range(0, days)]
-    return date_list
+    startDate = str_to_datetime(start)
+    outputList = []
+    date_list = [startDate + datetime.timedelta(days=x) for x in range(0, days)]
+    for date in date_list:
+        outputList.append(datetime_to_str(date))
+    return outputList
+
+def previousDays(start, days):
+    startDate = str_to_datetime(start)
+    outputList = []
+    date_list = [startDate - datetime.timedelta(days=x) for x in range(0, days)]
+    for date in date_list:
+        outputList.append(datetime_to_str(date))
+    return outputList
