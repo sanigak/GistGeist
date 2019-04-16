@@ -138,5 +138,18 @@ def plotGeneration(word, col, startDate, endDate):
     plt.plot(simpDates, plotList)
     plt.show()
 
+def returnWordFreq(word, col, startDate, endDate):
+    dates = dateRange(startDate, endDate)
 
-plotGeneration("pittsburgh", FOXcol, "03/08/19", "04/11/19")
+    outputList = []
+    
+    for date in dates:
+        query = returnDate(date,col)
+        content = returnContents(query)
+        freq = wordFreqContents(content,word)
+        num = numArticles(date,col)
+        if num > 0:
+            freq = freq/num
+        outputList.append(freq)
+    return outputList
+

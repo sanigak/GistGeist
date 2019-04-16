@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>4afd1050-2256-4220-aecc-3ed65be361b4</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>ArticleQuery.py</StartupFile>
+    <StartupFile>dataPipeline.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -42,10 +42,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="DB Examples\AAPL.csv" />
     <Content Include="DB Examples\AJbackup.json" />
     <Content Include="DB Examples\BBCbackup.json" />
     <Content Include="DB Examples\CNNbackup.json" />
     <Content Include="DB Examples\Foxbackup.json" />
+    <Content Include="DB Examples\MSFT.csv" />
     <Content Include="DB Examples\Optionsbackup.json" />
     <Content Include="output.txt" />
     <Content Include="CLEANoutput.txt" />
