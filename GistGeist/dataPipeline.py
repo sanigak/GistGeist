@@ -132,7 +132,7 @@ def tomorrowPrediction():
 
 
     # Load dataset
-    url = "C:\\Users\\sanigaka_cadm\\source\\repos\\sanigak\\GistGeist\\GistGeist\\DB Examples\\AAPL.csv"
+    url = "C:\\Users\\sanigaka_cadm\\source\\repos\\sanigak\\GistGeist\\GistGeist\\DB Examples\\GOOG.csv"
     names = ['Date','Open','High','Low','Close','Adj Close','Volume','Diff']
     dataset = pandas.read_csv(url, names=names)
 
