@@ -44,10 +44,11 @@
   <ItemGroup>
     <Content Include="DB Examples\AAPL.csv" />
     <Content Include="DB Examples\AJbackup.json" />
+    <Content Include="DB Examples\AMZN.csv" />
     <Content Include="DB Examples\BBCbackup.json" />
     <Content Include="DB Examples\CNNbackup.json" />
     <Content Include="DB Examples\Foxbackup.json" />
-    <Content Include="DB Examples\MSFT.csv" />
+    <Content Include="DB Examples\GOOG.csv" />
     <Content Include="DB Examples\Optionsbackup.json" />
     <Content Include="output.txt" />
     <Content Include="CLEANoutput.txt" />

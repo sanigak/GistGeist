@@ -153,3 +153,5 @@ def returnWordFreq(word, col, startDate, endDate):
         outputList.append(freq)
     return outputList
 
+
+
