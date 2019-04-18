@@ -81,12 +81,18 @@ def predictionLEGACY():
     dataset = pandas.read_csv(url, names=names)
 
 
+    dataset.drop(dataset.head(1).index,inplace=True) # drop last row
+
     insertWordColumn("apple", FOXcol, "02/20/19","04/10/19", dataset)
     insertWordColumn("google", FOXcol, "02/20/19","04/10/19", dataset)
     insertWordColumn("amazon", FOXcol, "02/20/19","04/10/19", dataset)
 
+    tempArray = dataset.values
+    tempX = tempArray[:,8:11]
+    currentTest = tempX[-1]
 
-    dataset.drop(dataset.tail(8).index,inplace=True) # drop last row
+    dataset.drop(dataset.tail(1).index,inplace=True) # drop last row
+    print(dataset)
 
 
     # Split-out validation dataset
@@ -123,10 +129,6 @@ def predictionLEGACY():
 
     denom = len(results)
     print(str(iterator) + "/" + str(denom))
-
-
-
-
 
 def tomorrowPrediction():
 
@@ -165,4 +167,3 @@ def tomorrowPrediction():
     
     print(results)
 
-tomorrowPrediction()
