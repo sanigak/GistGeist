@@ -421,10 +421,6 @@ def AJEngine():
     mycol = mydb["AJArticles"]
 
     AJlinks = AJFrontPageLinks()
-    print("HERE")
-    print("HERE")
-    print("HERE")
-    print("HERE")
 
     for link in AJlinks:
 

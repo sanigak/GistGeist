@@ -167,3 +167,4 @@ def tomorrowPrediction():
     
     print(results)
 
+predictionLEGACY()
