@@ -103,14 +103,6 @@ def wordFreqContents(contentsList, word):
 
 
 
-
-
-
-
-
-
-
- 
 def plotGeneration(word, col, startDate, endDate):
 
     dates = dateRange(startDate, endDate)
@@ -153,5 +145,4 @@ def returnWordFreq(word, col, startDate, endDate):
         outputList.append(freq)
     return outputList
 
-def positivityIndex():
-    pass
+

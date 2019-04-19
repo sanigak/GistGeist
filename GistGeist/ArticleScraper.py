@@ -130,10 +130,9 @@ def AJFrontPageLinks():
     finalList = set(outputList)
     return finalList
 
-#Helper method for BBCFrontPageLinks
-def hasNumbers(inputString):
 
-    return any(char.isdigit() for char in inputString)
+
+
 
 #Parses a CNN article into a dict of words and their frequencies
 def CNNArticleToText(URL):
@@ -265,6 +264,14 @@ def AJArticleToText(URL):
                 
     pass
 
+
+
+
+#Helper method for BBCFrontPageLinks
+def hasNumbers(inputString):
+
+    return any(char.isdigit() for char in inputString)
+
 #Helper method to fix certain problems with the raw output.txt file generated
 def cleanupTXT():
     f = open("output.txt","r+")
@@ -303,6 +310,38 @@ def getTitle():
     file_object = open("output.txt", "r")
     return file_object.readline()
 
+#Generates a positivity index for an article, judging how positive or negative an articles is based on its contents
+def positivityIndex(frequency):
+
+    good = frequency['good']
+    excellent = frequency['excellent']
+    favorable = frequency['favorable']
+    great = frequency['great']
+    positive = frequency['positive']
+    superb = frequency['superb']
+    valuable = frequency['valuable']
+    wonderful = frequency['wonderful']
+    superior = frequency['superior']
+    strong = frequency['strong']
+
+    bad = frequency['bad']
+    awful = frequency['awful']
+    dreadful = frequency['dreaful']
+    lousy = frequency['lousy']
+    poor = frequency['poor']
+    rough = frequency['rough']
+    deficient = frequency['deficient']
+    substandard = frequency['substandard']
+    unacceptable = frequency['unacceptable']
+
+    index = good+excellent+favorable+great+positive+superb+valuable+wonderful+superior+strong
+    index = index-bad-awful-dreadful-lousy-poor-rough-deficient-substandard-unacceptable
+
+    return index
+
+
+    
+
 #Sub-engine for the CNN-related tasks
 #Returns "CNN Worked"
 def CNNEngine():
@@ -327,12 +366,14 @@ def CNNEngine():
             
             contents = re.findall(r'\w+', open('output.txt').read().lower())
             frequency = Counter(contents)
+            positivity = positivityIndex(frequency)
             x = datetime.datetime.now()
             date = x.strftime("%x")
         
 
             mydict = {
                 "title": title,
+                "positivity": positivity,
                 "contents": frequency,
                 "date": date
                 }
@@ -362,12 +403,14 @@ def FoxEngine():
             title = getTitle()
             contents = re.findall(r'\w+', open('output.txt').read().lower())
             frequency = Counter(contents)
+            index = positivityIndex(frequency)
             x = datetime.datetime.now()
             date = x.strftime("%x")
         
 
             mydict = {
                 "title": title,
+                "positivity": positivity,
                 "contents": frequency,
                 "date": date
                 }
@@ -399,12 +442,14 @@ def BBCEngine():
             title = getTitle()
             contents = re.findall(r'\w+', open('output.txt').read().lower())
             frequency = Counter(contents)
+            index = positivityIndex(frequency)
             x = datetime.datetime.now()
             date = x.strftime("%x")
         
 
             mydict = {
                 "title": title,
+                "positivity":positivity,
                 "contents": frequency,
                 "date": date
                 }
@@ -435,12 +480,14 @@ def AJEngine():
             ()
             contents = re.findall(r'\w+', open('output.txt').read().lower())
             frequency = Counter(contents)
+            index = positivityIndex(frequency)
             x = datetime.datetime.now()
             date = x.strftime("%x")
         
 
             mydict = {
                 "title": title,
+                "positivity": positivity,
                 "contents": frequency,
                 "date": date
                 }
