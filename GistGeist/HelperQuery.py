@@ -1,6 +1,8 @@
 import datetime
 #Just some helper methods to assist the other Query files
 
+
+#converts a MM/DD/YY string date into a DateTime object
 def str_to_datetime(dateStr):
     split = dateStr.split("/")
     month = split[0]
@@ -13,10 +15,12 @@ def str_to_datetime(dateStr):
     date = datetime.datetime(year,month,day)
     return date
 
+#converts a DateTime object into a MM/DD/YY string date 
 def datetime_to_str(dateObj):
     date = dateObj.strftime("%x")
     return date
 
+#Generates a list of DateTime Dates given a MM/DD/YY string date start and end
 def dateRange(start, end):
     outputList = []
     startDate = str_to_datetime(start)
@@ -27,6 +31,7 @@ def dateRange(start, end):
         outputList.append(ans)
     return outputList
 
+#Generates a list of DateTime Dates given a MM/DD/YY string date start, and the number of days after that
 def additionalDays(start, days):
     startDate = str_to_datetime(start)
     outputList = []
@@ -35,6 +40,7 @@ def additionalDays(start, days):
         outputList.append(datetime_to_str(date))
     return outputList
 
+#Generates a list of DateTime Dates given a MM/DD/YY string date start, and the number of days before that
 def previousDays(start, days):
     startDate = str_to_datetime(start)
     outputList = []
