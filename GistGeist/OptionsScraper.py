@@ -139,7 +139,7 @@ def Engine():
 
 
     #Opens file to import symbols
-    file = open("symbols.txt","r")
+    file = open("C:\\Users\\sanig\\source\\repos\\GistGeist\\GistGeist\\symbols.txt","r")
     symbols = file.readlines()
 
 
